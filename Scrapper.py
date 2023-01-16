@@ -107,6 +107,7 @@ with open("Copy.csv", "r") as file:
                 data = driver.find_elements(
                     By.CSS_SELECTOR, ".AeaXub"
                 )
+                
                 detail = ""
                 img_list = ['https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png']
                 for element in data:
