@@ -131,7 +131,6 @@ with open("Copy.csv", "r") as file:
                                     not text.__contains__("Identifies as women-owned"),
                                     not text.__contains__("linktr.ee"),
                                     not text.__contains__("LGBTQ+ friendly"),
-                                    not text.__contains__("bit.ly"),
                                     not text.__contains__("Menu"),
                                     not text.__contains__("Floor")
                                 )
@@ -139,8 +138,8 @@ with open("Copy.csv", "r") as file:
                                 print(text, src)
                                 if text not in detail:
                                     detail += f"{element.text};"
-                    detail = detail[:-1]
-                    make_csv("Google Data.csv", f"{detail}\n", new=False)
+                    detail = detail[:-1]                   
+                    make_csv("Google Data.csv", f"{detail}\n", new=False)                   
                     time.sleep(1)
                 except:
                     pass
