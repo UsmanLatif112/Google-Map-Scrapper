@@ -1,6 +1,6 @@
 import time, csv
-from selenium import webdriver
 import pandas as pd
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
@@ -109,7 +109,9 @@ with open("Copy.csv", "r") as file:
 
                     detail = ""
                     img_list = [
-                        "https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png"
+                        "https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png" ,
+                        "https://fonts.gstatic.com/s/i/googlematerialicons/event/v14/gm_blue-24dp/1x/gm_event_gm_blue_24dp.png",
+                        "https://www.gstatic.com/images/icons/material/system_gm/1x/schedule_gm_blue_24dp.png"
                     ]
                     for element in data:
                         try:
