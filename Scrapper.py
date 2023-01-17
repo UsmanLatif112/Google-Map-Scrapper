@@ -1,5 +1,6 @@
 import time, csv
 import pandas as pd
+from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -11,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 
 # Make CSV to write Data
-
+data_folder = Path(__file__).resolve().parent / 'data'
 
 def make_csv(filename: str, data, new=True):
     """make a csv file with the given filename
@@ -21,9 +22,6 @@ def make_csv(filename: str, data, new=True):
     with open(filename, mode, newline="") as f:
         f.writelines(data)
 
-
-make_csv("Google Data.csv", "Google Map Scraping data\n", new=True)
-make_csv("Google Data.csv", "Business Name;Address;Website;Phone#\n", new=False)
 
 # open google map
 
@@ -36,6 +34,9 @@ with open("Copy.csv", "r") as file:
     reader = csv.reader(file)
     for row in reader:
         value = row[0]
+
+        make_csv(data_folder / f"{value}.csv", "Google Map Scraping data\n", new=True)
+        make_csv(data_folder / f"{value}.csv", "Business Name;Address;Website;Phone#\n", new=False)
 
         # Go to Google Maps
 
@@ -98,7 +99,7 @@ with open("Copy.csv", "r") as file:
                         (By.XPATH, "//*[@class='DUwDvf fontHeadlineLarge']")
                     )
                     )
-                    make_csv("Google Data.csv", f"{Business.text};", new=False)
+                    make_csv(data_folder / f"{value}.csv", f"{Business.text};", new=False)
                     time.sleep(1)
                     Scrol_l = driver.find_element(
                         By.CSS_SELECTOR,
@@ -138,8 +139,11 @@ with open("Copy.csv", "r") as file:
                                 print(text, src)
                                 if text not in detail:
                                     detail += f"{element.text};"
+                                else:
+                                    detail += ';'
+                                    
                     detail = detail[:-1]                   
-                    make_csv("Google Data.csv", f"{detail}\n", new=False)                   
+                    make_csv(data_folder / f"{value}.csv", f"{detail}\n", new=False)                   
                     time.sleep(1)
                 except:
                     pass
