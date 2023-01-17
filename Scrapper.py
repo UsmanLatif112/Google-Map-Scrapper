@@ -89,47 +89,58 @@ with open("Copy.csv", "r") as file:
         if len(elementxs) == total_elements:
             for element in elementxs:
                 time.sleep(3)
-                element.click()
-                time.sleep(2)
-                Business = WebDriverWait(driver, 5).until(
-                    EC.presence_of_element_located(
+                try:
+                    element.click()
+            
+                    time.sleep(2)
+                    Business = WebDriverWait(driver, 5).until(
+                        EC.presence_of_element_located(
                         (By.XPATH, "//*[@class='DUwDvf fontHeadlineLarge']")
                     )
-                )
-                make_csv("Google Data.csv", f"{Business.text};", new=False)
-                time.sleep(1)
-                Scrol_l = driver.find_element(
-                    By.CSS_SELECTOR,
-                    "#QA0Szd > div > div > div.w6VYqd > div.bJzME.Hu9e2e.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb.DxyBCb.kA9KIf.dS8AEf",
-                ).send_keys(Keys.SPACE)
+                    )
+                    make_csv("Google Data.csv", f"{Business.text};", new=False)
+                    time.sleep(1)
+                    Scrol_l = driver.find_element(
+                        By.CSS_SELECTOR,
+                        "#QA0Szd > div > div > div.w6VYqd > div.bJzME.Hu9e2e.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb.DxyBCb.kA9KIf.dS8AEf",
+                    ).send_keys(Keys.SPACE)
 
-                data = driver.find_elements(By.CSS_SELECTOR, ".AeaXub")
+                    data = driver.find_elements(By.CSS_SELECTOR, ".AeaXub")
 
-                detail = ""
-                img_list = [
-                    "https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png"
-                ]
-                for element in data:
-                    try:
-                        src = element.find_element(
-                            By.CSS_SELECTOR, " img"
-                        ).get_attribute("src")
-                    except:
-                        src = ""
-                    if src and src not in img_list:
-                        img_list.append(src)
-                        text: str = element.text
-                        if all(
-                            (
-                                not text.__contains__("Located in:"),
-                                not text.__contains__("Send to your phone"),
-                            )
-                        ):
-                            print(text, src)
-                            if text not in detail:
-                                detail += f"{element.text};"
-                detail = detail[:-1]
-                make_csv("Google Data.csv", f"{detail}\n", new=False)
-                time.sleep(1)
+                    detail = ""
+                    img_list = [
+                        "https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png"
+                    ]
+                    for element in data:
+                        try:
+                            src = element.find_element(
+                                By.CSS_SELECTOR, " img"
+                            ).get_attribute("src")
+                        except:
+                            src = ""
+                        if src and src not in img_list:
+                            img_list.append(src)
+                            text: str = element.text
+                            if all(
+                                (
+                                    not text.__contains__("Located in:"),
+                                    not text.__contains__("Send to your phone"),
+                                    not text.__contains__("Claim this business"),
+                                    not text.__contains__("Identifies as women-owned"),
+                                    not text.__contains__("linktr.ee"),
+                                    not text.__contains__("LGBTQ+ friendly"),
+                                    not text.__contains__("bit.ly"),
+                                    not text.__contains__("Menu"),
+                                    not text.__contains__("Floor")
+                                )
+                            ):
+                                print(text, src)
+                                if text not in detail:
+                                    detail += f"{element.text};"
+                    detail = detail[:-1]
+                    make_csv("Google Data.csv", f"{detail}\n", new=False)
+                    time.sleep(1)
+                except:
+                    pass
 time.sleep(5)
 driver.quit()
