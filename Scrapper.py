@@ -34,7 +34,6 @@ with open("Copy.csv", "r") as file:
     reader = csv.reader(file)
     for row in reader:
         value = row[0]
-
         make_csv(data_folder / f"{value}.csv", "Google Map Scraping data\n", new=True)
         make_csv(data_folder / f"{value}.csv", "Business Name;Address;Website;Phone#\n", new=False)
 
@@ -114,6 +113,11 @@ with open("Copy.csv", "r") as file:
                         "https://fonts.gstatic.com/s/i/googlematerialicons/event/v14/gm_blue-24dp/1x/gm_event_gm_blue_24dp.png",
                         "https://www.gstatic.com/images/icons/material/system_gm/1x/schedule_gm_blue_24dp.png"
                     ]
+                    required = {
+                        "https://www.gstatic.com/images/icons/material/system_gm/1x/place_gm_blue_24dp.png": '',
+                        "https://www.gstatic.com/images/icons/material/system_gm/1x/public_gm_blue_24dp.png": '',
+                        "https://www.gstatic.com/images/icons/material/system_gm/1x/phone_gm_blue_24dp.png": '',
+                    }
                     for element in data:
                         try:
                             src = element.find_element(
@@ -137,11 +141,9 @@ with open("Copy.csv", "r") as file:
                                 )
                             ):
                                 print(text, src)
-                                if text not in detail:
-                                    detail += f"{element.text};"
-                                else:
-                                    detail += ';'
-                                    
+                                required[src] = text
+                    for r in required.values():
+                        detail += f"{r};"
                     detail = detail[:-1]                   
                     make_csv(data_folder / f"{value}.csv", f"{detail}\n", new=False)                   
                     time.sleep(1)
