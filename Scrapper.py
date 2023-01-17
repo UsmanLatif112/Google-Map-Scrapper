@@ -49,7 +49,7 @@ with open("Copy.csv", "r") as file:
         driver.find_element(By.XPATH, "//*[@id='searchboxinput']").send_keys(Keys.ENTER)
         time.sleep(1)
         # Scroll or load all data
-        
+
         while True:
             try:
                 Scrol = driver.find_element(By.XPATH, "//div[@role='feed']").send_keys(
@@ -64,7 +64,7 @@ with open("Copy.csv", "r") as file:
 
             except:
                 pass
-        
+
         # Get the element len after scrol or load all data
         time.sleep(1)
 
@@ -75,7 +75,6 @@ with open("Copy.csv", "r") as file:
 
         total_elements = len(elementss)
         print("Total elements", total_elements)
-
 
         elementxs = driver.find_elements(
             By.XPATH,
@@ -104,21 +103,28 @@ with open("Copy.csv", "r") as file:
                     "#QA0Szd > div > div > div.w6VYqd > div.bJzME.Hu9e2e.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb.DxyBCb.kA9KIf.dS8AEf",
                 ).send_keys(Keys.SPACE)
 
-                data = driver.find_elements(
-                    By.CSS_SELECTOR, ".AeaXub"
-                )
-                
+                data = driver.find_elements(By.CSS_SELECTOR, ".AeaXub")
+
                 detail = ""
-                img_list = ['https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png']
+                img_list = [
+                    "https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png"
+                ]
                 for element in data:
                     try:
-                        src = element.find_element(By.CSS_SELECTOR, " img").get_attribute("src")
+                        src = element.find_element(
+                            By.CSS_SELECTOR, " img"
+                        ).get_attribute("src")
                     except:
-                        src = ''
+                        src = ""
                     if src and src not in img_list:
                         img_list.append(src)
                         text: str = element.text
-                        if all((not text.__contains__('Located in:'), not text.__contains__('Send to your phone'))):
+                        if all(
+                            (
+                                not text.__contains__("Located in:"),
+                                not text.__contains__("Send to your phone"),
+                            )
+                        ):
                             print(text, src)
                             if text not in detail:
                                 detail += f"{element.text};"
