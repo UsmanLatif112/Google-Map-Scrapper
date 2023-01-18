@@ -12,7 +12,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 
 # Make CSV to write Data
-data_folder = Path(__file__).resolve().parent / 'data'
+data_folder = Path(__file__).resolve().parent / "data"
+
 
 def make_csv(filename: str, data, new=True):
     """make a csv file with the given filename
@@ -35,7 +36,11 @@ with open("Copy.csv", "r") as file:
     for row in reader:
         value = row[0]
         make_csv(data_folder / f"{value}.csv", "Google Map Scraping data\n", new=True)
-        make_csv(data_folder / f"{value}.csv", "Business Name;Address;Website;Phone#\n", new=False)
+        make_csv(
+            data_folder / f"{value}.csv",
+            "Business Name;Address;Website;Phone#\n",
+            new=False,
+        )
 
         # Go to Google Maps
 
@@ -91,14 +96,16 @@ with open("Copy.csv", "r") as file:
                 time.sleep(3)
                 try:
                     element.click()
-            
+
                     time.sleep(2)
                     Business = WebDriverWait(driver, 5).until(
                         EC.presence_of_element_located(
-                        (By.XPATH, "//*[@class='DUwDvf fontHeadlineLarge']")
+                            (By.XPATH, "//*[@class='DUwDvf fontHeadlineLarge']")
+                        )
                     )
+                    make_csv(
+                        data_folder / f"{value}.csv", f"{Business.text};", new=False
                     )
-                    make_csv(data_folder / f"{value}.csv", f"{Business.text};", new=False)
                     time.sleep(1)
                     Scrol_l = driver.find_element(
                         By.CSS_SELECTOR,
@@ -109,14 +116,14 @@ with open("Copy.csv", "r") as file:
 
                     detail = ""
                     img_list = [
-                        "https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png" ,
+                        "https://maps.gstatic.com/mapfiles/maps_lite/images/2x/ic_plus_code.png",
                         "https://fonts.gstatic.com/s/i/googlematerialicons/event/v14/gm_blue-24dp/1x/gm_event_gm_blue_24dp.png",
-                        "https://www.gstatic.com/images/icons/material/system_gm/1x/schedule_gm_blue_24dp.png"
+                        "https://www.gstatic.com/images/icons/material/system_gm/1x/schedule_gm_blue_24dp.png",
                     ]
                     required = {
-                        "https://www.gstatic.com/images/icons/material/system_gm/1x/place_gm_blue_24dp.png": '',
-                        "https://www.gstatic.com/images/icons/material/system_gm/1x/public_gm_blue_24dp.png": '',
-                        "https://www.gstatic.com/images/icons/material/system_gm/1x/phone_gm_blue_24dp.png": '',
+                        "https://www.gstatic.com/images/icons/material/system_gm/1x/place_gm_blue_24dp.png": "",
+                        "https://www.gstatic.com/images/icons/material/system_gm/1x/public_gm_blue_24dp.png": "",
+                        "https://www.gstatic.com/images/icons/material/system_gm/1x/phone_gm_blue_24dp.png": "",
                     }
                     for element in data:
                         try:
@@ -137,15 +144,15 @@ with open("Copy.csv", "r") as file:
                                     not text.__contains__("linktr.ee"),
                                     not text.__contains__("LGBTQ+ friendly"),
                                     not text.__contains__("Menu"),
-                                    not text.__contains__("Floor")
+                                    not text.__contains__("Floor"),
                                 )
                             ):
                                 print(text, src)
                                 required[src] = text
                     for r in required.values():
                         detail += f"{r};"
-                    detail = detail[:-1]                   
-                    make_csv(data_folder / f"{value}.csv", f"{detail}\n", new=False)                   
+                    detail = detail[:-1]
+                    make_csv(data_folder / f"{value}.csv", f"{detail}\n", new=False)
                     time.sleep(1)
                 except:
                     pass
